@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Well Baby 😘</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0010;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Dancing Script', cursive;
+  }
+
+  /* ── STARFIELD ── */
+  .stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: twinkle var(--d) ease-in-out infinite alternate;
+    opacity: 0;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.1; transform: scale(0.6); }
+    to   { opacity: 0.9; transform: scale(1.2); }
+  }
+
+  /* ── FLOATING HEARTS BACKGROUND ── */
+  .bg-hearts {
+    position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  }
+  .bg-heart {
+    position: absolute;
+    font-size: var(--s);
+    animation: floatUp var(--d) ease-in infinite;
+    opacity: 0;
+    bottom: -60px;
+    left: var(--x);
+    animation-delay: var(--delay);
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(0) rotate(var(--r)) scale(0.5); opacity: 0; }
+    10%  { opacity: 0.8; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(-110vh) rotate(calc(var(--r) + 360deg)) scale(1.2); opacity: 0; }
+  }
+
+  /* ── FIREWORKS CANVAS ── */
+  #fw { position: fixed; inset: 0; pointer-events: none; z-index: 2; }
+
+  /* ── CENTER CARD ── */
+  .card {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 2.5rem 3rem;
+    animation: cardIn 1.2s cubic-bezier(.175,.885,.32,1.275) forwards;
+  }
+  @keyframes cardIn {
+    from { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  /* ── PULSING BIG HEART ── */
+  .big-heart {
+    font-size: 7rem;
+    display: block;
+    animation: heartbeat 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px #ff2d78) drop-shadow(0 0 60px #ff007a);
+  }
+  @keyframes heartbeat {
+    0%,100% { transform: scale(1); }
+    14%     { transform: scale(1.25); }
+    28%     { transform: scale(1.1); }
+    42%     { transform: scale(1.2); }
+    70%     { transform: scale(1); }
+  }
+
+  /* ── MAIN TEXT ── */
+  .main-text {
+    font-size: 3.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ff69b4, #ff1493, #ff69b4, #ffb6c1, #ff1493);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease infinite, textFloat 4s ease-in-out infinite;
+    margin: 0.8rem 0 0.4rem;
+    line-height: 1.1;
+    text-shadow: none;
+  }
+  @keyframes shimmer {
+    0%,100% { background-position: 0% 50%; }
+    50%     { background-position: 100% 50%; }
+  }
+  @keyframes textFloat {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-8px); }
+  }
+
+  /* ── KISS EMOJI ── */
+  .kiss {
+    font-size: 4rem;
+    display: inline-block;
+    animation: kissWobble 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 12px #ff69b4);
+  }
+  @keyframes kissWobble {
+    0%,100% { transform: rotate(-10deg) scale(1); }
+    25%     { transform: rotate(10deg) scale(1.15); }
+    50%     { transform: rotate(-5deg) scale(1.05); }
+    75%     { transform: rotate(8deg) scale(1.1); }
+  }
+
+  /* ── SUB TEXT ── */
+  .sub-text {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.3rem;
+    color: #ffb6c1;
+    margin-top: 0.8rem;
+    animation: fadeInUp 2s 0.8s both, subPulse 3s 2.8s ease-in-out infinite;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes subPulse {
+    0%,100% { text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493; }
+    50%     { text-shadow: 0 0 40px #ff69b4, 0 0 80px #ff1493, 0 0 120px #ff69b4; }
+  }
+
+  /* ── ORBITING HEARTS ── */
+  .orbit-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .orbit-heart {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: orbit var(--od) linear infinite;
+    transform-origin: 0 calc(-1 * var(--r));
+    left: 50%; top: 50%;
+    margin-left: -12px;
+    margin-top: -12px;
+    animation-delay: var(--odelay);
+    filter: drop-shadow(0 0 6px #ff1493);
+  }
+  @keyframes orbit {
+    from { transform: rotate(var(--start)) translateY(calc(-1 * var(--r))); }
+    to   { transform: rotate(calc(var(--start) + 360deg)) translateY(calc(-1 * var(--r))); }
+  }
+
+  /* ── SPARKLES ── */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 5;
+    font-size: var(--ss);
+    animation: sparkleAnim var(--sd) ease-out infinite;
+    animation-delay: var(--sdelay);
+    left: var(--sx); top: var(--sy);
+    opacity: 0;
+  }
+  @keyframes sparkleAnim {
+    0%   { opacity: 0; transform: scale(0) rotate(0deg); }
+    30%  { opacity: 1; transform: scale(1) rotate(180deg); }
+    60%  { opacity: 0.6; transform: scale(0.8) rotate(300deg); }
+    100% { opacity: 0; transform: scale(0) rotate(360deg); }
+  }
+
+  /* ── GLOWING RING ── */
+  .glow-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 2px solid transparent;
+    animation: ringPulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes ringPulse {
+    0%,100% { opacity: 0; transform: translate(-50%,-50%) scale(0.8); }
+    50%     { opacity: 0.6; transform: translate(-50%,-50%) scale(1.2); }
+  }
+
+  /* responsive */
+  @media (max-width: 500px) {
+    .main-text { font-size: 2.5rem; }
+    .big-heart  { font-size: 5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- BG hearts -->
+<div class="bg-hearts" id="bgHearts"></div>
+
+<!-- Fireworks canvas -->
+<canvas id="fw"></canvas>
+
+<!-- Sparkles -->
+<div id="sparkles"></div>
+
+<!-- Glow rings -->
+<div class="glow-ring" style="width:400px;height:400px;box-shadow:0 0 60px #ff1493,inset 0 0 60px #ff1493;animation-delay:0s;"></div>
+<div class="glow-ring" style="width:550px;height:550px;box-shadow:0 0 40px #ff69b4,inset 0 0 40px #ff69b4;animation-delay:1s;"></div>
+<div class="glow-ring" style="width:700px;height:700px;box-shadow:0 0 25px #c71585,inset 0 0 25px #c71585;animation-delay:2s;"></div>
+
+<!-- Main Card -->
+<div class="card">
+  <!-- Orbit ring -->
+  <div class="orbit-ring" style="width:0;height:0;">
+    <span class="orbit-heart" style="--r:170px;--od:6s;--start:0deg;--odelay:0s;">💗</span>
+    <span class="orbit-heart" style="--r:170px;--od:6s;--start:90deg;--odelay:0s;">💕</span>
+    <span class="orbit-heart" style="--r:170px;--od:6s;--start:180deg;--odelay:0s;">❤️</span>
+    <span class="orbit-heart" style="--r:170px;--od:6s;--start:270deg;--odelay:0s;">💖</span>
+    <span class="orbit-heart" style="--r:220px;--od:10s;--start:45deg;--odelay:0s;font-size:1rem;">✨</span>
+    <span class="orbit-heart" style="--r:220px;--od:10s;--start:135deg;--odelay:0s;font-size:1rem;">⭐</span>
+    <span class="orbit-heart" style="--r:220px;--od:10s;--start:225deg;--odelay:0s;font-size:1rem;">✨</span>
+    <span class="orbit-heart" style="--r:220px;--od:10s;--start:315deg;--odelay:0s;font-size:1rem;">⭐</span>
+  </div>
+
+  <span class="big-heart">❤️</span>
+  <div class="main-text">Study Well Baby</div>
+  <span class="kiss">😘</span>
+  <div class="sub-text">I believe in you! 💫</div>
+</div>
+
+<script>
+// ── STARS ──
+(function() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 180; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 3 + 1;
+    s.style.cssText = `
+      width:${sz}px; height:${sz}px;
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      --d:${(Math.random()*3+1).toFixed(1)}s;
+      animation-delay:${(Math.random()*4).toFixed(2)}s;
+    `;
+    c.appendChild(s);
+  }
+})();
+
+// ── BG HEARTS ──
+(function() {
+  const c = document.getElementById('bgHearts');
+  const emojis = ['❤️','💕','💗','💖','💓','💞','🌸','✨','💫'];
+  for (let i = 0; i < 25; i++) {
+    const h = document.createElement('div');
+    h.className = 'bg-heart';
+    h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    const sz = Math.random()*2+1;
+    h.style.cssText = `
+      --s:${sz}rem; --x:${Math.random()*100}%;
+      --d:${(Math.random()*8+6).toFixed(1)}s;
+      --r:${(Math.random()*60-30).toFixed(0)}deg;
+      --delay:${(Math.random()*8).toFixed(1)}s;
+    `;
+    c.appendChild(h);
+  }
+})();
+
+// ── SPARKLES ──
+(function() {
+  const c = document.getElementById('sparkles');
+  const sp = ['✨','⭐','💫','🌟','✦','⚡'];
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.textContent = sp[Math.floor(Math.random()*sp.length)];
+    s.style.cssText = `
+      --ss:${(Math.random()*1.5+0.8).toFixed(1)}rem;
+      --sd:${(Math.random()*2+1.5).toFixed(1)}s;
+      --sdelay:${(Math.random()*5).toFixed(2)}s;
+      --sx:${Math.random()*100}vw; --sy:${Math.random()*100}vh;
+    `;
+    c.appendChild(s);
+  }
+})();
+
+// ── FIREWORKS ──
+(function() {
+  const canvas = document.getElementById('fw');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const colors = [
+    '#ff0066','#ff69b4','#ff1493','#ff6eb4',
+    '#ffb6c1','#c71585','#ff85c8','#ffd700',
+    '#ff4500','#00eaff','#7fff00','#ff00ff'
+  ];
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x; this.y = y;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 7 + 2;
+      this.vx = Math.cos(angle) * speed;
+      this.vy = Math.sin(angle) * speed;
+      this.alpha = 1;
+      this.decay = Math.random() * 0.015 + 0.01;
+      this.color = color;
+      this.size = Math.random() * 3 + 1;
+      this.gravity = 0.12;
+      this.trail = [];
+    }
+    update() {
+      this.trail.push({x: this.x, y: this.y, a: this.alpha});
+      if (this.trail.length > 6) this.trail.shift();
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vy += this.gravity;
+      this.vx *= 0.98;
+      this.alpha -= this.decay;
+    }
+    draw() {
+      this.trail.forEach((pt, i) => {
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, this.size * (i/this.trail.length), 0, Math.PI*2);
+        ctx.fillStyle = this.color + Math.floor(pt.a * 80).toString(16).padStart(2,'0');
+        ctx.fill();
+      });
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color + Math.floor(this.alpha * 255).toString(16).padStart(2,'0');
+      ctx.fill();
+    }
+  }
+
+  class Shell {
+    constructor() {
+      this.x = Math.random() * W;
+      this.y = H;
+      this.ty = Math.random() * H * 0.55 + H * 0.05;
+      this.vy = -(H - this.ty) / 55;
+      this.exploded = false;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.trail = [];
+    }
+    update() {
+      this.trail.push({x: this.x, y: this.y});
+      if (this.trail.length > 10) this.trail.shift();
+      this.y += this.vy;
+      this.vy += 0.07;
+      if (this.vy >= 0 && !this.exploded) { this.explode(); return true; }
+      return false;
+    }
+    explode() {
+      this.exploded = true;
+      const count = Math.floor(Math.random() * 80 + 80);
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(this.x, this.y, this.color));
+      }
+      // heart-shaped burst every 3rd shell
+      if (Math.random() < 0.4) {
+        for (let t = 0; t < Math.PI*2; t += 0.15) {
+          const hx = 16 * Math.pow(Math.sin(t), 3);
+          const hy = -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t));
+          const scale = 5;
+          const p = new Particle(this.x, this.y, '#ff1493');
+          p.vx = hx * scale / 16;
+          p.vy = hy * scale / 16;
+          particles.push(p);
+        }
+      }
+    }
+    draw() {
+      ctx.save();
+      this.trail.forEach((pt, i) => {
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 2 * (i/this.trail.length), 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,255,200,${i/this.trail.length*0.8})`;
+        ctx.fill();
+      });
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
+      ctx.fillStyle = '#fffde0';
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  let shells = [];
+  let particles = [];
+  let lastShell = 0;
+  const shellInterval = 700;
+
+  function loop(ts) {
+    ctx.fillStyle = 'rgba(10,0,16,0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    if (ts - lastShell > shellInterval) {
+      shells.push(new Shell());
+      if (Math.random() < 0.3) shells.push(new Shell());
+      lastShell = ts;
+    }
+
+    shells = shells.filter(s => { const done = s.update(); s.draw(); return !done; });
+    particles = particles.filter(p => { p.update(); if (p.alpha > 0.01) { p.draw(); return true; } return false; });
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
